@@ -1,53 +1,84 @@
 #include "network.h"
+#include "random.h"
+#include <iostream>
 
 
-void Network::resize(const size_t &) {
-
-   values.size()
+void Network::resize(const size_t & t) {
+   values.resize(t);
+   RNG.normal(values);
 }
 
-bool Network::add_link(const size_t & first, const size_t & second) { //doit etre utiliser dans cette classe
-    //créer le lien entre les 2 noeuds passés en paramètre
-    // le first va créer un lien avec le second et le second va créer un autre lien le first -> bidirectionnel
-    //return true si le lien a bien été inséré
-    return false;
+
+bool Network::add_link(const size_t & firstNode, const size_t & secondNode) { //doit etre utiliser dans cette classe
+
+    if (firstNode == secondNode) {
+        return false;
+    }
+
+    else if(firstNode >= values.size() or (secondNode >= values.size())) {
+        return false;
+    }
+
+    for (std::multimap<size_t,size_t>::iterator it=links.begin(); it!=links.end(); ++it) {
+
+        if ((it->first == firstNode and it->second == secondNode) or (it->first == secondNode and it->second == firstNode) ) {
+            return false;
+        }
+    }
+    links.insert(std::pair<size_t,size_t>(firstNode,secondNode));
+    links.insert(std::pair<size_t,size_t>(secondNode,firstNode));
+    return true;
 }
 
 size_t Network::random_connect(const double & mean_deg) {
 
     //On clear tous les lien déja existants
     links.clear();
+    size_t count(0);
+    std::vector<size_t> nodes;
+    std::vector<int> poissons(size());
 
-    //nombre de nodes voisins qu'on va lier au noeud courant
-    int NodesNumber(RNG.poisson(mean_deg));
-
-    //On parcout les noeuds et on lui affecte NodesNumber liens
-    for(size_t node=0; node < values.size() ; node++) {
-
-        //On vérifie qu'on peut add_link entre la node courante et NodesNumbers autres nodes
-        for(int i(0); i < NodesNumber ; ++i) {
-             if(add_link(node, //choisir une node aléatoire parmi le tableau de nodes ))
-             //le faire "NodesNumber" fois
-
-             //faire un tableau qui contient tous les indices des noeuds disponibles (en excluant le noeuds courant)
-             //on tire au sort un nombre parmi les indices dispo
-        }
-
+    for(size_t node=0; node < size() ; node++) {
+        nodes.push_back(node);
     }
 
-    return 0; //retourne le nombre de lien total créé -> soit compteur soit commande multimap
+    RNG.poisson(poissons, mean_deg);
+
+    for(size_t node=0; node < size() ; node++) {
+
+        RNG.shuffle(nodes);
+        size_t it(0);
+
+        for(int i(0); it < poissons[node] and i < size() ; ++i) {    //Je sais pas quoi passer ici en paramètre
+
+            if (add_link(node, nodes[i])) {
+                ++it;
+            }
+        }
+        count += it;
+    }
+    return count;
 }
 
 size_t Network::set_values(const std::vector<double> & new_values) {
 
-    size_t count(0); //Est ce que j'ai bien compris ce qu'ils veulent dire par "number of nodes succesfully reset"
-    for(size_t node=0; node < values.size() ; node++) {
-        values[node] = new_values[node];
-       ++count;
+    size_t count(0);
+
+    if (values.size() < new_values.size()) {
+
+        for(size_t node=0; node < values.size() ; node++) {
+            values[node] = new_values[node];
+            ++count;
+        }
     }
-    //attention à la taille du new_values -> on continue à affecter les nouvelles valeurs jusqu'à que l'un des 2 n'aies plus de valeurs dispo
-    //on va parcourir les noeuds et remplacer sa valeur par la valeur correspondante de new_value
-    //on met un compteur quand le noeuds est bien remplacé -> retourne une size_t
+
+    else {
+        for(size_t node=0; node < new_values.size() ; node++) {
+            values[node] = new_values[node];
+            ++count;
+        }
+
+    }
     return count;
 }
 
@@ -55,32 +86,34 @@ size_t Network::size() const {
     return values.size();
 }
 
+
 double Network::value(const size_t &_n) const {
     return values[_n];
 }
 
+
 size_t Network::degree(const size_t &_n) const {
-    //retourne le nombre de liens qu'à le node _n
-    //utiliser la multimap
-    return 0;
+    return links.count(_n);
 }
 
 std::vector<double> Network::sorted_values() const {
 
-    double tmp;
-    std::vector<double> sorted_values;
+        std::vector<double> descending_values = values;
+        sort(descending_values.begin() , descending_values.end() , std::greater<double>());
 
-    for(const auto& value : values) {
-        //algorithme qui affecte à la premieère valeur du tableau la plus grande valeure etc
-        //tmp = value;
-    }
-
-    return sorted_values;
+        return descending_values;
 }
 
+
 std::vector<size_t> Network::neighbors(const size_t & node) const {
+
     std::vector<size_t> neighbors;
-    //utiliser la multimap pour retourner un tableau contenant les nodes voisins de node
+
+    for (std::multimap<size_t,size_t>::const_iterator it=links.begin(); it!=links.end(); ++it) {
+        if (it->first == node) {
+            neighbors.push_back(it->second);
+        }
+    }
     return neighbors;
 }
 

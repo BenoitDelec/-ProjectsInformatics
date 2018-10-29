@@ -1,6 +1,7 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 /*!
   This is a random number class based on standard c++-11 generators.

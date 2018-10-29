@@ -35,6 +35,7 @@ void RandomNumbers::normal(std::vector<double> &res, double mean, double sd) {
 
 int RandomNumbers::poisson(double mean) {
     std::poisson_distribution<> pois(mean);
+    std::cout << pois(rng) << std::endl;
     return pois(rng);
 }
 

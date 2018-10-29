@@ -1,0 +1,132 @@
+Start testing: Oct 28 18:09 CET
+----------------------------------------------------------
+1/1 Testing: Network_simulation
+1/1 Test: Network_simulation
+Command: "/Users/benoitdelecourt/Documents/BA3/Prog3/ProjectsInformatics/cmake-build-debug/testNetSim"
+Directory: /Users/benoitdelecourt/Documents/BA3/Prog3/ProjectsInformatics/cmake-build-debug
+"Network_simulation" start time: Oct 28 18:09 CET
+Output:
+----------------------------------------------------------
+[==========] Running 3 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 3 tests from networkTest
+[ RUN      ] networkTest.initialize
+[       OK ] networkTest.initialize (1 ms)
+[ RUN      ] networkTest.connect
+196
+206
+216
+208
+187
+193
+182
+197
+194
+216
+192
+197
+204
+220
+202
+204
+175
+208
+192
+187
+192
+207
+213
+193
+205
+200
+212
+206
+183
+193
+177
+208
+193
+189
+182
+187
+208
+185
+201
+210
+204
+212
+219
+203
+200
+197
+195
+192
+197
+194
+233
+195
+201
+200
+215
+196
+179
+204
+203
+201
+210
+223
+189
+191
+207
+216
+216
+196
+194
+195
+217
+197
+201
+191
+170
+238
+204
+210
+168
+231
+222
+204
+194
+202
+201
+184
+207
+197
+191
+211
+210
+191
+193
+194
+231
+204
+205
+193
+197
+196
+[       OK ] networkTest.connect (585 ms)
+[ RUN      ] networkTest.values
+[       OK ] networkTest.values (0 ms)
+[----------] 3 tests from networkTest (586 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test case ran. (586 ms total)
+[  PASSED  ] 3 tests.
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"Network_simulation" end time: Oct 28 18:09 CET
+"Network_simulation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 28 18:09 CET

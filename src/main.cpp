@@ -3,6 +3,7 @@
 #include "simulation.h"
 #include <iostream>
 
+
 RandomNumbers RNG;
 
 int main(int argc, char **argv) {
