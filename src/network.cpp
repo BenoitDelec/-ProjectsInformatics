@@ -25,6 +25,7 @@ bool Network::add_link(const size_t & firstNode, const size_t & secondNode) { //
             return false;
         }
     }
+
     links.insert(std::pair<size_t,size_t>(firstNode,secondNode));
     links.insert(std::pair<size_t,size_t>(secondNode,firstNode));
     return true;
@@ -49,7 +50,7 @@ size_t Network::random_connect(const double & mean_deg) {
         RNG.shuffle(nodes);
         size_t it(0);
 
-        for(int i(0); it < poissons[node] and i < size() ; ++i) {    //Je sais pas quoi passer ici en paramètre
+        for(int i(0); it < poissons[node] and i < size() ; ++i) {
 
             if (add_link(node, nodes[i])) {
                 ++it;
