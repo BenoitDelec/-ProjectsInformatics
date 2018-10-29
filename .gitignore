@@ -1,4 +1,5 @@
 cmake-build-debug
 extra
 .DS_Store
+.idea
 
