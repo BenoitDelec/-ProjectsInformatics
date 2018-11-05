@@ -1,6 +1,7 @@
 #include "network.h"
 #include "random.h"
 #include <iostream>
+#include <cstdlib>
 
 
 void Network::resize(const size_t & t) {
@@ -22,10 +23,11 @@ bool Network::add_link(const size_t & firstNode, const size_t & secondNode) { //
     for (std::multimap<size_t,size_t>::iterator it=links.begin(); it!=links.end(); ++it) {
 
         if ((it->first == firstNode and it->second == secondNode) or (it->first == secondNode and it->second == firstNode) ) {
-            return false;
+           return false;
         }
     }
 
+    
     links.insert(std::pair<size_t,size_t>(firstNode,secondNode));
     links.insert(std::pair<size_t,size_t>(secondNode,firstNode));
     return true;
@@ -34,6 +36,7 @@ bool Network::add_link(const size_t & firstNode, const size_t & secondNode) { //
 size_t Network::random_connect(const double & mean_deg) {
 
     //On clear tous les lien déja existants
+
     links.clear();
     size_t count(0);
     std::vector<size_t> nodes;
@@ -89,12 +92,31 @@ size_t Network::size() const {
 
 
 double Network::value(const size_t &_n) const {
-    return values[_n];
+
+    double error(0.0);
+
+    try {
+        return values[_n];
+    }
+    catch (const std::out_of_range& oor) {
+        std::cerr << "Out of Range error: " << oor.what() << '\n';
+    }
+    return error;
 }
 
 
 size_t Network::degree(const size_t &_n) const {
-    return links.count(_n);
+
+    unsigned long error(0);
+
+    try {
+        return links.count(_n);
+    }
+    catch (const std::out_of_range& oor) {
+        std::cerr << "Out of Range error: " << oor.what() << '\n';
+    }
+
+    return error;
 }
 
 std::vector<double> Network::sorted_values() const {
